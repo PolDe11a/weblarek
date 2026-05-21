@@ -131,18 +131,17 @@ interface IProduct {
 - адрес доставки
 
 interface IBuyer {
-  payment: TPayment;
+  payment: TPayment | null;
   email: string;
   phone: string;
   address: string;
 }
 
-`type TPayment = 'card' | 'cash' | null;`
+`type TPayment = 'card' | 'cash';`
 
 Тип TPayment описывает способ оплаты заказа.
 - card - оплата картой;
 - cash - оплата наличными;
-- null - способ оплаты ещё не выбран.
 
 ## Модели данных
 
@@ -164,8 +163,8 @@ interface IBuyer {
 `constructor()` - конструктор не принимает параметров.
 
 Поля класса:
-`protected _items: IProduct[];` - хранит массив всех товаров, полученных с сервера.
-`protected _preview: IProduct | null;` - хранит товар, выбранный для подробного просмотра. Если товар не выбран, содержит null.
+`protected items: IProduct[];` - хранит массив всех товаров, полученных с сервера.
+`protected preview: IProduct | null;` - хранит товар, выбранный для подробного просмотра. Если товар не выбран, содержит null.
 
 Методы класса:
 - `setItems(items: IProduct[]): void` - cохраняет массив товаров
@@ -188,7 +187,7 @@ interface IBuyer {
 `constructor()` - конструктор не принимает параметров.
 
 Поля класса:
-`protected _items: IProduct[];` - хранит массив товаров, добавленных в корзину.
+`protected items: IProduct[];` - хранит массив товаров, добавленных в корзину.
 
 Методы класса:
 - `getItems(): IProduct[]` - возвращает массив товаров, которые находятся в корзине.
@@ -214,10 +213,10 @@ interface IBuyer {
 `constructor()` - конструктор не принимает параметров.
 
 Поля класса:
-- `protected _payment: TPayment;` - хранит выбранный способ оплаты.
-- `protected _address: string;` - хранит адрес доставки.
-- `protected _phone: string;` - хранит телефон покупателя.
-- `protected _email: string;` - хранит электронную почту покупателя.
+- `protected payment: TPayment;` - хранит выбранный способ оплаты.
+- `protected address: string;` - хранит адрес доставки.
+- `protected phone: string;` - хранит телефон покупателя.
+- `protected email: string;` - хранит электронную почту покупателя.
 
 Методы класса:
 - `setPayment(payment: TPayment): void` - сохраняет выбранный способ оплаты.
@@ -228,12 +227,7 @@ interface IBuyer {
 - `clear(): void` - очищат данные покупателя.
 - `validate(): TBuyerErrors` - проверяет данные покупателя и возвращает объект с ошибками. Если ошибок нет, возвращает пустой объект.
 
-type TBuyerErrors = {
-  payment?: string;
-  address?: string;
-  phone?: string;
-  email?: string;
-};
+type TBuyerErrors = Partial<Record<keyof IBuyer, string>>;
 
 - если способ оплаты не выбран, возвращается ошибка для поля `payment`;
 - если адрес не заполнен, возвращается ошибка для поля `address`;

@@ -19,27 +19,23 @@ export interface IProduct {
 }
 
 export interface IBuyer {
-  payment: TPayment;
+  payment: TPayment | null;
   email: string;
   phone: string;
   address: string;
 }
 
-export type TPayment = "card" | "cash" | null;
+export type TPayment = "card" | "cash";
 
-export type TBuyerErrors = {
-  payment?: string;
-  address?: string;
-  phone?: string;
-  email?: string;
-};
+export type TBuyerErrors = Partial<Record<keyof IBuyer, string>>; 
 
 export type TProductsResponse = {
   total: number;
   items: IProduct[];
 };
 
-export type TOrder = IBuyer & {
+export type TOrder = Omit<IBuyer, "payment"> & {
+  payment: TPayment;
   total: number;
   items: string[];
 };

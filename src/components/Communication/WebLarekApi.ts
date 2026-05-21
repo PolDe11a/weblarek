@@ -1,4 +1,4 @@
-import { IApi, TOrder, TOrderResult, TProductsResponse } from '../../types';
+import { IApi, TOrder, TOrderResult, TProductsResponse } from "../../types";
 
 export class WebLarekApi {
   protected api: IApi;
@@ -8,10 +8,10 @@ export class WebLarekApi {
   }
 
   getProducts(): Promise<TProductsResponse> {
-    return this.api.get('/product/') as Promise<TProductsResponse>;
+    return this.api.get<TProductsResponse>("/product/");
   }
 
   orderProducts(order: TOrder): Promise<TOrderResult> {
-    return this.api.post('/order/', order) as Promise<TOrderResult>;
+    return this.api.post<TOrderResult>("/order/", order);
   }
 }
